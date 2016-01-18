@@ -1,0 +1,14 @@
+elasticpoet:
+  # build: 
+  image: elasticsearch
+  command: /bin/bash -c 'usermod -u 1000 elasticsearch; gosu elasticsearch elasticsearch'
+  environment:
+    - UPDATE_CMD=invoke wheelhouse --dev --addons && invoke requirements --dev --addons && gosu www-data python manage.py collectstatic --noinput
+  expose:
+    - 9200
+    - 9300
+  ports:
+    - 9200:9200
+    - 9300:9300
+  volumes:
+    - $PWD/esdata:/usr/share/elasticsearch/data
